@@ -1,6 +1,7 @@
 # RAG for Philanthropic Campaign Analysis
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/rag_llm_benchmark_judge.ipynb)
+[![Open Notebook 1 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/campaign_embeddings_bert_mini.ipynb)
+[![Open Notebook 2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/rag_llm_benchmark_judge.ipynb)
 
 ## Project Overview
 
@@ -31,6 +32,16 @@ The notebooks are especially suited for coursework and lab sessions where studen
   - Saves reusable retrieval artifacts.
   - Includes interactive projection/visual exploration.
 
+Open in Colab:
+- https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/campaign_embeddings_bert_mini.ipynb
+
+Why this notebook matters (rationale):
+- It creates the full retrieval foundation used by the benchmark notebook.
+- It standardizes campaign text, metadata, and instance detection so downstream evaluation is consistent.
+- It produces reusable artifacts (CSV, NPY, JSONL, Parquet) that can be consumed by many RAG systems.
+- It helps students understand the difference between building a retriever and benchmarking generators.
+- It allows visual sanity checks of embedding quality before any model comparison.
+
 ### Notebook 2: Multi-LLM Benchmark + LLM-as-Judge
 - `rag_llm_benchmark_judge.ipynb`
   - Loads prepared artifacts.
@@ -39,6 +50,14 @@ The notebooks are especially suited for coursework and lab sessions where studen
   - Uses a dedicated judge model for rubric-based scoring.
   - Exports answer logs, judged logs, winners, leaderboard, and significance results.
   - Includes comparative visualizations and statistical significance analysis.
+
+Open in Colab:
+- https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/rag_llm_benchmark_judge.ipynb
+
+Why this notebook comes second:
+- It assumes Notebook 1 outputs already exist.
+- It focuses on controlled comparison of answer models, not retriever construction.
+- It adds evaluation, interpretation, and significance testing on top of the retrieval pipeline.
 
 ### Generated Artifacts
 - `campaign_instances.csv`
@@ -53,6 +72,12 @@ The notebooks are especially suited for coursework and lab sessions where studen
 - `rag_benchmark_leaderboard.csv`
 - `rag_benchmark_significance_tests.csv`
 
+## Recommended Execution Order
+
+1. Run Notebook 1 (`campaign_embeddings_bert_mini.ipynb`) first.
+2. Verify generation of retrieval artifacts (especially `campaign_instances.csv` and `campaign_embeddings_bert_mini.npy`).
+3. Run Notebook 2 (`rag_llm_benchmark_judge.ipynb`) second.
+
 ## Methodological Flow
 
 ## 1) Data Ingestion and Structuring
@@ -64,14 +89,14 @@ Campaign texts are embedded with a compact encoder (`bert-mini`) so that both re
 ## 3) Retrieval
 At query time, user questions are embedded in the same vector space and matched to campaign vectors via cosine similarity. Top-k records are used as the evidence context.
 
-## 4) RAG Answering
+## 4) RAG Answering (Notebook 2)
 Each answer model receives:
 - The same question.
 - The same retrieved context.
 
 This ensures fair comparative evaluation by controlling retrieval variance.
 
-## 5) LLM-as-Judge Evaluation
+## 5) LLM-as-Judge Evaluation (Notebook 2)
 A separate judge model scores each answer on:
 - factuality
 - conciseness
@@ -81,7 +106,7 @@ A separate judge model scores each answer on:
 
 A weighted overall score is computed and stored with reasoning text when available.
 
-## 6) Comparative Analytics
+## 6) Comparative Analytics (Notebook 2)
 The benchmark notebook provides:
 - Per-dimension model comparison by question.
 - Overall score comparison by question.
@@ -89,7 +114,7 @@ The benchmark notebook provides:
 - Per-question winners.
 - Aggregate leaderboard.
 
-## 7) Statistical Significance
+## 7) Statistical Significance (Notebook 2)
 The notebook also computes pairwise significance testing between models:
 - two-sided sign test
 - exact paired sign-flip test
@@ -119,8 +144,9 @@ All downstream generation calls are constrained to models defined in that single
 6. Review exported benchmark and significance outputs.
 
 ## Google Colab
-Use this direct notebook link:
-- https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/rag_llm_benchmark_judge.ipynb
+Use these notebook links in sequence:
+- Notebook 1: https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/campaign_embeddings_bert_mini.ipynb
+- Notebook 2: https://colab.research.google.com/github/AIforPhilanthropy/RAG/blob/main/rag_llm_benchmark_judge.ipynb
 
 If running in Colab:
 - Ensure required packages are installed from the optional install cell.
