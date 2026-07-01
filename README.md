@@ -201,6 +201,3 @@ When used for nonprofit decision support:
 - verify critical claims,
 - preserve transparent source citations,
 - document model and prompt configurations.
-
-## License and Attribution
-Add the appropriate repository license and any required data/model attribution terms before broader distribution.
